@@ -33,7 +33,7 @@ public class App extends Application {
         stage.setScene(new Scene(root, 800, 600));
         stage.setTitle("Dino Game");
         stage.show();
-        System.out.println("game");
+        System.out.println("gamegmae");
     }
 
 
