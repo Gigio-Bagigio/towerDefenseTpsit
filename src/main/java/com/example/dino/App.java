@@ -36,7 +36,6 @@ public class App extends Application {
         System.out.println("gamegmae");
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
