@@ -14,19 +14,24 @@ public class InterfacciaGiocatore extends Application {
 
     @Override
     public void start(Stage stage) {
+
+
+
+
+
         Canvas canvas = new Canvas(1920, 1080);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         StackPane root = new StackPane(canvas);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/6GujW+.png"));
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
 
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
-                gc.drawImage(img, 0,0,1920, 1080);
+                gc.drawImage(img, 1920, 1080);
             }
         };
         timer.start();
