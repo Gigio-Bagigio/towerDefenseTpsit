@@ -10,6 +10,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Map;
+
 public class InterfacciaGiocatore extends Application {
 
     @Override
@@ -23,15 +25,21 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         StackPane root = new StackPane(canvas);
+        Navicella navicella = new Navicella(200, 200, 3, 2);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/6GujW+.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
 
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
-                gc.drawImage(img, 1920, 1080);
+                gc.drawImage(img, 0, 0, 1920, 1080);
+
+                navicella.update();
+                navicella.draw(gc);
+
+
             }
         };
         timer.start();
