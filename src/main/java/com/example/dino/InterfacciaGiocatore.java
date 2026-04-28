@@ -25,9 +25,10 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         StackPane root = new StackPane(canvas);
-        Navicella navicella = new Navicella(200, 200, 3, 2);
+        Ostacolo ostacolo = new Ostacolo(200, 200, 3, 2);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/background.gif"));
+        Image img2 = new Image(getClass().getResourceAsStream("/assets/Asteroids_Foreground.png"));
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -36,9 +37,9 @@ public class InterfacciaGiocatore extends Application {
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
                 gc.drawImage(img, 0, 0, 1920, 1080);
 
-                navicella.update();
-                navicella.draw(gc);
-
+                ostacolo.update();
+                ostacolo.draw(gc);
+                gc.drawImage(img2, 24,24,24,24,0,0,100,100);
 
             }
         };
