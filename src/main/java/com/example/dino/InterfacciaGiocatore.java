@@ -10,8 +10,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Map;
-
 public class InterfacciaGiocatore extends Application {
 
     @Override
@@ -25,22 +23,15 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         StackPane root = new StackPane(canvas);
-        Ostacolo ostacolo = new Ostacolo(200, 200, 3, 2);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/background.gif"));
-        Image img2 = new Image(getClass().getResourceAsStream("/assets/Asteroids_Foreground.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/6GujW+.png"));
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
 
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
-                gc.drawImage(img, 0, 0, 1920, 1080);
-
-                ostacolo.update();
-                ostacolo.draw(gc);
-                gc.drawImage(img2, 24,24,24,24,0,0,100,100);
-
+                gc.drawImage(img, 1920, 1080);
             }
         };
         timer.start();
