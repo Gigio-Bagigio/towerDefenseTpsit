@@ -14,24 +14,25 @@ public class InterfacciaGiocatore extends Application {
 
     @Override
     public void start(Stage stage) {
-        Canvas canvas = new Canvas(800, 600);
+        Canvas canvas = new Canvas(1920, 1080);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         StackPane root = new StackPane(canvas);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/rocks.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/6GujW+.png"));
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                gc.setFill(Color.rgb(20, 20, 35));
-                gc.fillRect(0, 0, 800, 600); // Cancella tutto
-                gc.drawImage(img,24,24,24,24,0,0,100,100);
+
+                gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
+                gc.drawImage(img, 1920, 1080);
             }
         };
         timer.start();
 
-        stage.setScene(new Scene(root, 800, 600));
-        stage.setTitle("Dino Game");
+        stage.setScene(new Scene(root, 1920, 1080));
+        stage.setTitle("TowerDefense");
         stage.show();
         System.out.println("gamegmae");
     }
