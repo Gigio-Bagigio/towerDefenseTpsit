@@ -79,7 +79,7 @@
                             <options>
                                 <option>--enable-native-access=javafx.graphics</option>
                             </options>
-                            <mainClass>com.example.dino/com.example.dino.App</mainClass>
+                            <mainClass>com.example.dino/com.example.dino.InterfacciaGiocatore</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
