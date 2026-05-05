@@ -22,12 +22,14 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         StackPane root = new StackPane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             ostacolos.push(new Ostacolo(500+i*550, Math.random() * 10000 % 1080,0, -3));
             ostacolos.push(new Ostacolo(700+i*550, Math.random() * 10000 % 1080,0, 3));
         }
 
         Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
+
+        Torre torreAmica = new Torre(0, 500);
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -41,7 +43,7 @@ public class InterfacciaGiocatore extends Application {
                     ostacolos.get(i).update();
                     ostacolos.get(i).draw(gc);
                 }
-
+                torreAmica.draw(gc);
 
             }
         };
