@@ -31,7 +31,7 @@ public class InterfacciaGiocatore extends Application {
             public void handle(long now) {
 
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
-                gc.drawImage(img, 1920, 1080);
+                gc.drawImage(img, 0 ,0 ,1920, 1080);
             }
         };
         timer.start();
