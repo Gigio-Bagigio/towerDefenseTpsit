@@ -1,6 +1,7 @@
 package com.example.dino;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Ostacolo {
@@ -24,7 +25,7 @@ public class Ostacolo {
     }
 
     public void draw(GraphicsContext gc) {
-        gc.setFill(color);
-        gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+
+        gc.drawImage(new Image(getClass().getResourceAsStream("/assets/Asteroids_Foreground.png")), x ,y ,100, 100);
     }
 }

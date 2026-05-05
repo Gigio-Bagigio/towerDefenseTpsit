@@ -47,4 +47,3 @@ public class InterfacciaGiocatore extends Application {
         launch(args);
     }
 }
-
