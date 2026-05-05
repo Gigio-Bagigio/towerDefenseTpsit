@@ -39,7 +39,6 @@ public class InterfacciaGiocatore extends Application {
         stage.setScene(new Scene(root, 1920, 1080));
         stage.setTitle("TowerDefense");
         stage.show();
-        System.out.println("gamegmae");
     }
 
     public static void main(String[] args) {
