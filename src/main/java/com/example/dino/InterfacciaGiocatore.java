@@ -23,8 +23,8 @@ public class InterfacciaGiocatore extends Application {
         StackPane root = new StackPane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
-            ostacolos.push(new Ostacolo(500+i*550, 1080,0, -3));
-            ostacolos.push(new Ostacolo(700+i*550, 0,0, 3));
+            ostacolos.push(new Ostacolo(500+i*550, Math.random() * 10000 % 1080,0, -3));
+            ostacolos.push(new Ostacolo(700+i*550, Math.random() * 10000 % 1080,0, 3));
         }
 
         Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
