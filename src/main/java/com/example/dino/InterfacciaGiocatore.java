@@ -22,7 +22,6 @@ public class InterfacciaGiocatore extends Application {
         StackPane root = new StackPane(canvas);
         Ostacolo ostacolo = new Ostacolo(200, 200, 3, 2);
         Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
-        Image img2 = new Image(getClass().getResourceAsStream("/assets/Asteroids_Foreground.png"));
 
 
         AnimationTimer timer = new AnimationTimer() {

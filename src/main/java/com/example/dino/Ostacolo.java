@@ -26,6 +26,6 @@ public class Ostacolo {
 
     public void draw(GraphicsContext gc) {
 
-        gc.drawImage(new Image(getClass().getResourceAsStream("/assets/Asteroids_Foreground.png")), x ,y ,100, 100);
+        gc.drawImage(new Image(getClass().getResourceAsStream("/assets/roccia.png")), x ,y ,100, 100);
     }
 }
