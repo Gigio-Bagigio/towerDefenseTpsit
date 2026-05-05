@@ -22,10 +22,15 @@ public class Ostacolo {
     public void update() {
         x += vx; // Posizione += velocità
         y += vy;
+        if (y < 0) {
+            vy = -vy;
+        }
+        if (y > 1080) {
+            vy = -vy;
+        }
     }
 
     public void draw(GraphicsContext gc) {
-
         gc.drawImage(new Image(getClass().getResourceAsStream("/assets/roccia.png")), x ,y ,100, 100);
     }
 }
