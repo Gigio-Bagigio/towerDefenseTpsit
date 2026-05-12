@@ -20,6 +20,7 @@ public class Impulso {
 
     public void draw(GraphicsContext gc) {
         gc.drawImage(new Image(getClass().getResourceAsStream("/assets/impulso.png")), x ,y ,65, 15);
+
     }
 
     public void update(GraphicsContext gc) {

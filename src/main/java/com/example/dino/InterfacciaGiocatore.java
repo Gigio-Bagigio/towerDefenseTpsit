@@ -58,6 +58,10 @@ public class InterfacciaGiocatore extends Application {
                         impulsiAttivi.push(impulsi.get(i));
                         impulsi.get(i).update(gc);
                     }
+                    for (int j = 0; j < ostacolos.size(); j++) {
+                        ostacolos.get(j).underRock((int) (impulsi.get(i).x), (int) (impulsi.get(i).x + impulsi.get(i).width), (int) (impulsi.get(i).y), (int) (impulsi.get(i).y + impulsi.get(i).height));
+
+                    }
                 }
                 player.draw(gc);
 

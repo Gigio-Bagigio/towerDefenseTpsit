@@ -32,6 +32,17 @@ public class Ostacolo {
 
     public void draw(GraphicsContext gc) {
         gc.drawImage(new Image(getClass().getResourceAsStream("/assets/roccia.png")), x ,y ,100, 100);
+
+    }
+
+    public boolean underRock(int x1, int x2, int y1, int y2) {
+        if (x1-x + x2 - x < 100 && x1-x + x2 - x > 0) {
+            if (y1-y + y2 - y < 100 && y1-y + y2 - y > 0) {
+                System.out.println("roccia colpita");
+                return true;
+            }
+        }
+        return false;
     }
 
 }

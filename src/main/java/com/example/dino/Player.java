@@ -5,12 +5,12 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Player {
-    double x, y;
-    double width, height;
+    int x, y;
+    int width, height;
     double radius;
     Color color;
 
-    public Player(double x, double y, double width, double height) {
+    public Player(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
