@@ -31,7 +31,7 @@ public class InterfacciaGiocatore extends Application {
         }
         Scene scene = new Scene(root, 1920, 1080);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/backGround.png"));
 
         Torre torreAmica = new Torre(0, 500);
 
