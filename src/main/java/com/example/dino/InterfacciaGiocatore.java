@@ -2,10 +2,13 @@ package com.example.dino;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -26,11 +29,16 @@ public class InterfacciaGiocatore extends Application {
             ostacolos.push(new Ostacolo(500+i*550, Math.random() * 10000 % 1080,0, -3));
             ostacolos.push(new Ostacolo(700+i*550, Math.random() * 10000 % 1080,0, 3));
         }
+        Scene scene = new Scene(root, 1920, 1080);
 
         Image img = new Image(getClass().getResourceAsStream("/assets/spaceBackground.png"));
 
         Torre torreAmica = new Torre(0, 500);
 
+        Player player = new Player(400, 400, 65, 15);
+
+        LinkedList<Impulso> impulsi = new LinkedList<>();
+        LinkedList<Impulso> impulsiAttivi = new LinkedList<>();
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -45,11 +53,46 @@ public class InterfacciaGiocatore extends Application {
                 }
                 torreAmica.draw(gc);
 
+                for (int i = 0; i < impulsi.size(); i++) {
+                    if (impulsi.get(i).x < 1920) {
+                        impulsiAttivi.push(impulsi.get(i));
+                        impulsi.get(i).update(gc);
+                    }
+                }
+                player.draw(gc);
+
+                for (int i = 0; i < impulsi.size(); i++) {
+                    impulsi.pop();
+                }
+                while (!impulsiAttivi.isEmpty()) {
+                    impulsi.push(impulsiAttivi.pop());
+                }
+
+
             }
         };
         timer.start();
 
-        stage.setScene(new Scene(root, 1920, 1080));
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.RIGHT) {
+                    player.x += 20;
+                }else if (event.getCode() == KeyCode.LEFT) {
+                    player.x -= 20;
+                } else if (event.getCode() == KeyCode.UP) {
+                    player.y -= 20;
+                }else if (event.getCode() == KeyCode.DOWN) {
+                    player.y += 20;
+                }else if (event.getCode() == KeyCode.SPACE) {
+                    impulsi.push(new Impulso(player.x, player.y + 42.5, 65, 65));
+                }
+            }
+        });
+
+
+
+        stage.setScene(scene);
         stage.setTitle("TowerDefense");
         stage.show();
     }

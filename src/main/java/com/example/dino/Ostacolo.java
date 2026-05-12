@@ -33,4 +33,5 @@ public class Ostacolo {
     public void draw(GraphicsContext gc) {
         gc.drawImage(new Image(getClass().getResourceAsStream("/assets/roccia.png")), x ,y ,100, 100);
     }
+
 }
