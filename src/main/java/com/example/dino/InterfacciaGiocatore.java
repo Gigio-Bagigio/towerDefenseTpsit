@@ -7,12 +7,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import javafx.animation.PauseTransition;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import javax.swing.text.html.MinimalHTMLWriter;
 import java.util.LinkedList;
 
@@ -23,7 +26,7 @@ public class InterfacciaGiocatore extends Application {
 
         Canvas canvas = new Canvas(1920, 1080);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        StackPane root = new StackPane(canvas);
+        Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
         for (int i = 0; i < 2; i++) {
             ostacolos.push(new Ostacolo(500+i*550, Math.random() * 10000 % 1080,0, -3));
@@ -40,6 +43,9 @@ public class InterfacciaGiocatore extends Application {
         LinkedList<Impulso> impulsi = new LinkedList<>();
         LinkedList<Impulso> impulsiAttivi = new LinkedList<>();
 
+        LinkedList<ImageView> esplosioni = new LinkedList<>();
+        Image gifEsplosione = new Image(getClass().getResourceAsStream("/assets/7BR6qK.gif"));
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -53,25 +59,59 @@ public class InterfacciaGiocatore extends Application {
                 }
                 torreAmica.draw(gc);
 
+                LinkedList<Impulso> impulsiDaRimuovere = new LinkedList<>();
+
                 for (int i = 0; i < impulsi.size(); i++) {
                     if (impulsi.get(i).x < 1920) {
                         impulsiAttivi.push(impulsi.get(i));
                         impulsi.get(i).update(gc);
                     }
                     for (int j = 0; j < ostacolos.size(); j++) {
-                        ostacolos.get(j).underRock((int) (impulsi.get(i).x), (int) (impulsi.get(i).x + impulsi.get(i).width), (int) (impulsi.get(i).y), (int) (impulsi.get(i).y + impulsi.get(i).height));
+                        boolean colpito = ostacolos.get(j).underRock(
+                                (int) impulsi.get(i).x,
+                                (int) (impulsi.get(i).x + impulsi.get(i).width),
+                                (int) impulsi.get(i).y,
+                                (int) (impulsi.get(i).y + impulsi.get(i).height)
+                        );
+                        if (colpito) {
+                            double ox = ostacolos.get(j).x;
+                            double oy = ostacolos.get(j).y;
+                            ostacolos.remove(j);
+                            impulsiDaRimuovere.add(impulsi.get(i));
 
+                            // Crea l'ImageView della GIF nella posizione dell'ostacolo
+                            ImageView esplosione = new ImageView(gifEsplosione);
+                            esplosione.setX(ox);
+                            esplosione.setY(oy);
+                            esplosione.setFitWidth(100);
+                            esplosione.setFitHeight(100);
+                            root.getChildren().add(esplosione);
+                            esplosioni.add(esplosione);
+
+                            // Rimuovi la GIF dopo 1 secondo
+                            PauseTransition pausa = new PauseTransition(Duration.seconds(1));
+                            pausa.setOnFinished(e -> {
+                                root.getChildren().remove(esplosione);
+                                esplosioni.remove(esplosione);
+                            });
+                            pausa.play();
+
+                            break;
+                        }
                     }
                 }
+
+                impulsi.removeAll(impulsiDaRimuovere);
+
                 player.draw(gc);
 
                 for (int i = 0; i < impulsi.size(); i++) {
                     impulsi.pop();
                 }
+
                 while (!impulsiAttivi.isEmpty()) {
                     impulsi.push(impulsiAttivi.pop());
                 }
-
 
             }
         };
