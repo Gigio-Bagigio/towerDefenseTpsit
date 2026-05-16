@@ -20,14 +20,16 @@ public class Ostacolo {
     }
 
     public void update() {
-        x += vx; // Posizione += velocità
+        /*x += vx; // Posizione += velocità
         y += vy;
         if (y < 0) {
             vy = -vy;
         }
         if (y > 1080) {
             vy = -vy;
-        }
+        }*/
+
+        x += vx;
     }
 
     public void draw(GraphicsContext gc) {
@@ -38,10 +40,8 @@ public class Ostacolo {
     public boolean underRock(int x1, int x2, int y1, int y2) {
         if (x2 > this.x && x1 < this.x + 100 &&
             y2 > this.y && y1 < this.y + 100) {
-            if (y1-y + y2 - y < 100 && y1-y + y2 - y > 0) {
-                System.out.println("roccia colpita");
-                return true;
-            }
+            System.out.println("roccia colpita");
+            return true;
         }
         return false;
     }

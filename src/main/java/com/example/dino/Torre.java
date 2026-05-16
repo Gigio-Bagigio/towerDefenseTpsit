@@ -11,7 +11,13 @@ public class Torre {
         this.y = y;
     }
     public void draw(GraphicsContext gc) {
-        gc.drawImage(new Image(getClass().getResourceAsStream("/assets/torre.png")), x ,y ,200, 250);
+
+        Image pianeta = new Image(getClass().getResourceAsStream("/assets/pianeta.png"));
+        double imgWidth = pianeta.getWidth();
+        double imgHeight = pianeta.getHeight();
+
+        gc.drawImage(pianeta, imgWidth * 0.5, 0, imgWidth * 0.5, imgHeight, x, y, 300, 1080);
+
     }
 
 }

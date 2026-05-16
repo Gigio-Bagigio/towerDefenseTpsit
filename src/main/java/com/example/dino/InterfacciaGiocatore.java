@@ -28,15 +28,14 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
-        for (int i = 0; i < 2; i++) {
-            ostacolos.push(new Ostacolo(500+i*550, Math.random() * 10000 % 1080,0, -3));
-            ostacolos.push(new Ostacolo(700+i*550, Math.random() * 10000 % 1080,0, 3));
+        for (int i = 0; i < 5; i++) {
+            ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080,-3, 0));
         }
         Scene scene = new Scene(root, 1920, 1080);
 
         Image img = new Image(getClass().getResourceAsStream("/assets/backGround.png"));
 
-        Torre torreAmica = new Torre(0, 500);
+        Torre torreAmica = new Torre(0, 0);
 
         Player player = new Player(400, 400, 65, 15);
 
@@ -61,6 +60,8 @@ public class InterfacciaGiocatore extends Application {
 
                 LinkedList<Impulso> impulsiDaRimuovere = new LinkedList<>();
 
+
+                // controlla le collisoni degli impulsi con le rocce
                 for (int i = 0; i < impulsi.size(); i++) {
                     if (impulsi.get(i).x < 1920) {
                         impulsiAttivi.push(impulsi.get(i));
@@ -79,7 +80,6 @@ public class InterfacciaGiocatore extends Application {
                             ostacolos.remove(j);
                             impulsiDaRimuovere.add(impulsi.get(i));
 
-                            // Crea l'ImageView della GIF nella posizione dell'ostacolo
                             ImageView esplosione = new ImageView(gifEsplosione);
                             esplosione.setX(ox);
                             esplosione.setY(oy);
@@ -88,7 +88,6 @@ public class InterfacciaGiocatore extends Application {
                             root.getChildren().add(esplosione);
                             esplosioni.add(esplosione);
 
-                            // Rimuovi la GIF dopo 1 secondo
                             PauseTransition pausa = new PauseTransition(Duration.seconds(1));
                             pausa.setOnFinished(e -> {
                                 root.getChildren().remove(esplosione);
@@ -97,7 +96,10 @@ public class InterfacciaGiocatore extends Application {
                             pausa.play();
 
                             break;
+                        } else if (ostacolos.get(j).x < 0) {
+                            ostacolos.remove(j);
                         }
+
                     }
                 }
 
@@ -112,6 +114,11 @@ public class InterfacciaGiocatore extends Application {
                 while (!impulsiAttivi.isEmpty()) {
                     impulsi.push(impulsiAttivi.pop());
                 }
+
+                while (ostacolos.size() < 4) {
+                    ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080,-3, 0));
+                }
+
 
             }
         };
@@ -129,11 +136,12 @@ public class InterfacciaGiocatore extends Application {
                 }else if (event.getCode() == KeyCode.DOWN) {
                     player.y += 20;
                 }else if (event.getCode() == KeyCode.SPACE) {
-                    impulsi.push(new Impulso(player.x, player.y + 42.5, 65, 65));
+                    if (impulsi.size() < 5) {
+                        impulsi.push(new Impulso(player.x, player.y + 42.5, 65, 65));
+                    }
                 }
             }
         });
-
 
 
         stage.setScene(scene);
