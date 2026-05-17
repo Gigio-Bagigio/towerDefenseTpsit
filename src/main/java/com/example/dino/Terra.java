@@ -22,14 +22,16 @@ public class Terra {
 
     public void draw(GraphicsContext gc) {
 
+        // immagine terra
         Image pianeta = new Image(getClass().getResourceAsStream("/assets/pianeta.png"));
         double imgWidth = pianeta.getWidth();
         double imgHeight = pianeta.getHeight();
 
         gc.drawImage(pianeta, imgWidth * 0.5, 0, imgWidth * 0.5, imgHeight, x, y, 300, 1080);
 
+        // percentuale vita
         double barraLarghezza = 500;
-        double barraAltezza = 50;
+        double barraAltezza = 20;
 
         double barraX =  (1920 - barraLarghezza) / 2;
         double barraY = 30;

@@ -26,12 +26,16 @@ public class InterfacciaGiocatore extends Application {
     private final int SOGLIA_BOSS = 15; //dopo quanti asteroidi distrutti appare il boss
     private boolean bossAttivo = false;
     private int roccieAbbattute = 0;
+    private int punti = 0;
+    private int puntiPerVincere = 300;
+
+    GraphicsContext gc;
 
     @Override
     public void start(Stage stage) {
 
         Canvas canvas = new Canvas(1920, 1080);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
 
@@ -84,6 +88,7 @@ public class InterfacciaGiocatore extends Application {
                         );
                         if (colpito) {
                             roccieAbbattute++;
+                            punti += 10;
                             double ox = ostacolos.get(j).x;
                             double oy = ostacolos.get(j).y;
                             ostacolos.remove(j);
@@ -107,6 +112,7 @@ public class InterfacciaGiocatore extends Application {
                             break;
                         } else if (ostacolos.get(j).x < 0) {
                             ostacolos.remove(j);
+                            j--;
                         }
 
                     }
@@ -133,10 +139,11 @@ public class InterfacciaGiocatore extends Application {
                         torreAmica.subisciDanno(10);
                         ostacolos.remove(i);
                         i--;
+                        punti-=50;
                     }
                 }
                 for (int i = 0; i < ostacolos.size(); i++) {
-                    boolean navicellaColpita = ostacolos.get(i).underRock(player.x, player.width + player.x,  player.y,  player.height + player.y);
+                    boolean navicellaColpita = ostacolos.get(i).underRock(player.x, player.width + player.x,  player.y, player.height + player.y);
                     if (navicellaColpita) {
                         player.subisciDanno(70);
                         ostacolos.remove(i);
@@ -160,7 +167,6 @@ public class InterfacciaGiocatore extends Application {
                 }
                 if (player.vitaCorrente <= 0){
                     giocoFinito[0] = true;
-                    giocoFinito[0] = true;
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, 1920, 1080);
 
@@ -174,8 +180,7 @@ public class InterfacciaGiocatore extends Application {
                     gc.fillText("La tua navicella è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
                     return;
                 }
-                if (roccieAbbattute > 10) {
-                    giocoFinito[0] = true;
+                if (punti >= puntiPerVincere) {
                     giocoFinito[0] = true;
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, 1920, 1080);
@@ -190,6 +195,7 @@ public class InterfacciaGiocatore extends Application {
                     gc.fillText("La Terra è salva!", 1920 / 2.0, (1080 / 2.0) + 60);
                     stop();
                 }
+                disegnaBarraPunti();
 
             }
         };
@@ -216,11 +222,37 @@ public class InterfacciaGiocatore extends Application {
 
 
         stage.setScene(scene);
-        stage.setTitle("TowerDefense");
+        stage.setTitle("EarthDefense");
         stage.show();
     }
 
 
+    private void disegnaBarraPunti() {
+        double barraLarghezza = 500;
+        double barraAltezza = 20;
+
+        double barraX =  (1920 - barraLarghezza) / 2;
+        double barraY = 1040;
+
+        double percentualePunti = (double) punti / puntiPerVincere;
+
+        if (percentualePunti > 0.5){
+            gc.setFill(Color.GREEN);
+        } else if (percentualePunti > 0.2){
+            gc.setFill(Color.YELLOW);
+        } else {
+            gc.setFill(Color.RED);
+        }
+        gc.fillRect(barraX, barraY, barraLarghezza*percentualePunti, barraAltezza);
+        gc.fillText(((int) (percentualePunti * 100)) + "%", 1920 / 2, barraY);
+
+
+
+
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        gc.strokeRect(barraX, barraY, barraLarghezza*percentualePunti, barraAltezza);
+    }
 
 
     public static void main(String[] args) {
