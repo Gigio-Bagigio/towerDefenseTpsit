@@ -79,6 +79,8 @@ public class InterfacciaGiocatore extends Application {
                         }
                     }
 
+
+
                     naveAmicas.push(new NaveAmica(1920, yCasuale, 0, -3));
                     contatoreFrame = 0;
 
@@ -99,7 +101,7 @@ public class InterfacciaGiocatore extends Application {
                 LinkedList<Impulso> impulsiDaRimuovere = new LinkedList<>();
 
 
-                // controlla le collisoni degli impulsi con le rocce
+                // controlla le collisoni degli impulsi con le rocce e in caso con l'astronave
                 for (int i = 0; i < impulsi.size(); i++) {
                     if (impulsi.get(i).x < 1920) {
                         impulsiAttivi.push(impulsi.get(i));
@@ -134,9 +136,19 @@ public class InterfacciaGiocatore extends Application {
                             });
                             pausa.play();
 
+
+
                             break;
                         } else if (ostacolos.get(j).x < 0) {
                             ostacolos.remove(j);
+                        }
+                        for (int k = 0; k < naveAmicas.size(); k++) {
+                            if (impulsi.get(i).x + impulsi.get(i).width > naveAmicas.get(i).x && impulsi.get(i).x < naveAmicas.get(i).x+ 100 && impulsi.get(i).y + impulsi.get(i).height > naveAmicas.get(i).y && impulsi.get(i).y < naveAmicas.get(i).y+ 100){
+                                torreAmica.subisciDanno(10);
+                                naveAmicas.remove(k);
+                                impulsiDaRimuovere.add(impulsi.get(i));
+                                break;
+                            }
                         }
 
                     }
