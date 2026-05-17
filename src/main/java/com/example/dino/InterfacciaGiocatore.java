@@ -25,6 +25,7 @@ public class InterfacciaGiocatore extends Application {
     private int asteroidiDistrutti = 0;
     private final int SOGLIA_BOSS = 15; //dopo quanti asteroidi distrutti appare il boss
     private boolean bossAttivo = false;
+    private int roccieAbbattute = 0;
 
     @Override
     public void start(Stage stage) {
@@ -50,6 +51,7 @@ public class InterfacciaGiocatore extends Application {
 
         LinkedList<ImageView> esplosioni = new LinkedList<>();
         Image gifEsplosione = new Image(getClass().getResourceAsStream("/assets/7BR6qK.gif"));
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -81,6 +83,7 @@ public class InterfacciaGiocatore extends Application {
                                 (int) (impulsi.get(i).y + impulsi.get(i).height)
                         );
                         if (colpito) {
+                            roccieAbbattute++;
                             double ox = ostacolos.get(j).x;
                             double oy = ostacolos.get(j).y;
                             ostacolos.remove(j);
@@ -170,6 +173,22 @@ public class InterfacciaGiocatore extends Application {
                     gc.setFont(new javafx.scene.text.Font("Arial", 30));
                     gc.fillText("La tua navicella è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
                     return;
+                }
+                if (roccieAbbattute > 10) {
+                    giocoFinito[0] = true;
+                    giocoFinito[0] = true;
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(0, 0, 1920, 1080);
+
+                    gc.setFill(Color.GOLD);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 80));
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.fillText("WIN", 1920 / 2.0, 1080 / 2.0);
+
+                    gc.setFill(Color.WHITE);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 30));
+                    gc.fillText("La Terra è salva!", 1920 / 2.0, (1080 / 2.0) + 60);
+                    stop();
                 }
 
             }
