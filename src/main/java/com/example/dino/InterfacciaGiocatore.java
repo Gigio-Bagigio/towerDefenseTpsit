@@ -64,26 +64,24 @@ public class InterfacciaGiocatore extends Application {
                 if (contatoreFrame >= 540) {
                     double yCasuale = 0;
                     boolean posizioneInvalida = true;
-                    int tentativiMassimi = 20;
                     int tentativi = 0;
-                    while (posizioneInvalida && tentativi < tentativiMassimi) {
-                        yCasuale = Math.random() * (1080 - 100);
+
+                    while (posizioneInvalida && tentativi < 20) {
+                        yCasuale = Math.random() * 980;
                         posizioneInvalida = false;
                         tentativi++;
-                        for (int i = 0; i < ostacolos.size(); i++) {
-                            Ostacolo roccia = ostacolos.get(i);
 
-                            if (roccia.x > 1700) {
-                                if (yCasuale + 100 > roccia.y && yCasuale < roccia.y + 100) {
-                                    posizioneInvalida = true;
-                                    break;
-                                }
+                        for (int i = 0; i < ostacolos.size(); i++) {
+                            if (ostacolos.get(i).underRock(1920, 2020, (int) yCasuale, (int) yCasuale + 100)) {
+                                posizioneInvalida = true;
+                                break;
                             }
                         }
                     }
 
                     naveAmicas.push(new NaveAmica(1920, yCasuale, 0, -3));
                     contatoreFrame = 0;
+
                 }
 
 
