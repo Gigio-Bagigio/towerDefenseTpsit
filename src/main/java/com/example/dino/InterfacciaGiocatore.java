@@ -1,5 +1,6 @@
 package com.example.dino;
 
+import com.sun.source.tree.WhileLoopTree;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -12,14 +13,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.animation.PauseTransition;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import javax.swing.text.html.MinimalHTMLWriter;
+
 import java.util.LinkedList;
 
 public class InterfacciaGiocatore extends Application {
+    final boolean[] giocoFinito = {false};
 
     @Override
     public void start(Stage stage) {
@@ -29,13 +31,13 @@ public class InterfacciaGiocatore extends Application {
         Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
         for (int i = 0; i < 5; i++) {
-            ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080,-3, 0));
+            ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080, -3, 0));
         }
         Scene scene = new Scene(root, 1920, 1080);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/backGround.png"));
+        Image img = new Image(getClass().getResourceAsStream("/assets/sfondo.png"));
 
-        Torre torreAmica = new Torre(0, 0);
+        Terra torreAmica = new Terra(0, 0);
 
         Player player = new Player(400, 400, 65, 15);
 
@@ -50,7 +52,7 @@ public class InterfacciaGiocatore extends Application {
             public void handle(long now) {
 
                 gc.fillRect(0, 0, 1920, 1080); // Cancella tutto
-                gc.drawImage(img, 0 ,0 ,1920, 1080);
+                gc.drawImage(img, 0, 0, 1920, 1080);
 
                 for (int i = 0; i < ostacolos.size(); i++) {
                     ostacolos.get(i).update();
@@ -116,9 +118,55 @@ public class InterfacciaGiocatore extends Application {
                 }
 
                 while (ostacolos.size() < 4) {
-                    ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080,-3, 0));
+                    ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080, -3, 0));
                 }
 
+                for (int i = 0; i < ostacolos.size(); i++) {
+                    if (ostacolos.get(i).x <= 300) {
+                        torreAmica.subisciDanno(10);
+                        ostacolos.remove(i);
+                        i--;
+                    }
+                }
+                for (int i = 0; i < ostacolos.size(); i++) {
+                    boolean navicellaColpita = ostacolos.get(i).underRock(player.x, player.width + player.x,  player.y,  player.height + player.y);
+                    if (navicellaColpita) {
+                        player.subisciDanno(70);
+                        ostacolos.remove(i);
+                        i--;
+                    }
+                }
+                if (torreAmica.vitaCorrente <= 0){
+                    giocoFinito[0] = true;
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(0, 0, 1920, 1080);
+
+                    gc.setFill(Color.RED);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 80));
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.fillText("GAME OVER", 1920 / 2.0, 1080 / 2.0);
+
+                    gc.setFill(Color.WHITE);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 30));
+                    gc.fillText("La Terra è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
+                    return;
+                }
+                if (player.vitaCorrente <= 0){
+                    giocoFinito[0] = true;
+                    giocoFinito[0] = true;
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(0, 0, 1920, 1080);
+
+                    gc.setFill(Color.RED);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 80));
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.fillText("GAME OVER", 1920 / 2.0, 1080 / 2.0);
+
+                    gc.setFill(Color.WHITE);
+                    gc.setFont(new javafx.scene.text.Font("Arial", 30));
+                    gc.fillText("La tua navicella è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
+                    return;
+                }
 
             }
         };
@@ -127,13 +175,13 @@ public class InterfacciaGiocatore extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.RIGHT) {
+                if (event.getCode() == KeyCode.D) {
                     player.x += 20;
-                }else if (event.getCode() == KeyCode.LEFT) {
+                }else if (event.getCode() == KeyCode.A) {
                     player.x -= 20;
-                } else if (event.getCode() == KeyCode.UP) {
+                } else if (event.getCode() == KeyCode.W) {
                     player.y -= 20;
-                }else if (event.getCode() == KeyCode.DOWN) {
+                }else if (event.getCode() == KeyCode.S) {
                     player.y += 20;
                 }else if (event.getCode() == KeyCode.SPACE) {
                     if (impulsi.size() < 5) {
@@ -148,6 +196,9 @@ public class InterfacciaGiocatore extends Application {
         stage.setTitle("TowerDefense");
         stage.show();
     }
+
+
+
 
     public static void main(String[] args) {
         launch(args);

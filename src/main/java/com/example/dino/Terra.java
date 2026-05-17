@@ -1,34 +1,38 @@
 package com.example.dino;
 
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class Player {
-    int x, y;
-    int width, height;
-    double radius;
-    Color color;
+import javax.lang.model.util.ElementScanner6;
+
+public class Terra {
+    double x, y;
     double vitaMassima = 100;
     double vitaCorrente = 100;
 
-    public Player(int x, int y, int width, int height) {
+    public Terra(double x, double y) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = Color.CORNFLOWERBLUE;
+
 
     }
 
     public void draw(GraphicsContext gc) {
-        gc.drawImage(new Image(getClass().getResourceAsStream("/assets/navicella.png")), x ,y ,100, 100);
 
-        double barraLarghezza = 100;
-        double barraAltezza = 5;
+        Image pianeta = new Image(getClass().getResourceAsStream("/assets/pianeta.png"));
+        double imgWidth = pianeta.getWidth();
+        double imgHeight = pianeta.getHeight();
 
-        double barraX = x + (100 - barraLarghezza) / 2;
-        double barraY = y - 10;
+        gc.drawImage(pianeta, imgWidth * 0.5, 0, imgWidth * 0.5, imgHeight, x, y, 300, 1080);
+
+        double barraLarghezza = 500;
+        double barraAltezza = 50;
+
+        double barraX =  (1920 - barraLarghezza) / 2;
+        double barraY = 30;
 
         double percentualeVita = vitaCorrente / vitaMassima;
 
@@ -39,9 +43,13 @@ public class Player {
         } else {
             gc.setFill(Color.RED);
         }
-
         String testoVita =  (int) (percentualeVita * 100) + "%";
         gc.fillRect(barraX, barraY, barraLarghezza, barraAltezza);
+        gc.fillText(testoVita, 1920 / 2, barraY - 4);
+
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        gc.strokeRect(barraX, barraY, barraLarghezza, barraAltezza);
     }
 
     public void subisciDanno(double danno) {
@@ -50,4 +58,4 @@ public class Player {
             this.vitaCorrente = 0;
         }
     }
-    }
+}
