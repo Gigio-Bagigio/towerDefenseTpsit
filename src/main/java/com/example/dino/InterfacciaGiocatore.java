@@ -25,12 +25,15 @@ public class InterfacciaGiocatore extends Application {
     final boolean[] giocoFinito = {false};
     private int contatoreFrame = 0;
     private int roccieAbbattute = 0;
+    GraphicsContext gc;
+    int punti = 0;
+    int puntiPerVincere = 500;
 
     @Override
     public void start(Stage stage) {
 
         Canvas canvas = new Canvas(1920, 1080);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
         LinkedList<NaveAmica> naveAmicas = new LinkedList<>();
@@ -79,8 +82,6 @@ public class InterfacciaGiocatore extends Application {
                         }
                     }
 
-
-
                     naveAmicas.push(new NaveAmica(1920, yCasuale, 0, -3));
                     contatoreFrame = 0;
 
@@ -95,6 +96,10 @@ public class InterfacciaGiocatore extends Application {
                 for (int i = 0; i < naveAmicas.size(); i++) {
                     naveAmicas.get(i).update();
                     naveAmicas.get(i).draw(gc);
+                    if (naveAmicas.get(i).x <= 0) {
+                        naveAmicas.remove(i);
+                        i--;
+                    }
                 }
                 torreAmica.draw(gc);
 
@@ -115,6 +120,7 @@ public class InterfacciaGiocatore extends Application {
                                 (int) (impulsi.get(i).y + impulsi.get(i).height)
                         );
                         if (colpito) {
+                            punti += 10;
                             roccieAbbattute++;
                             double ox = ostacolos.get(j).x;
                             double oy = ostacolos.get(j).y;
@@ -136,17 +142,16 @@ public class InterfacciaGiocatore extends Application {
                             });
                             pausa.play();
 
-
-
                             break;
                         } else if (ostacolos.get(j).x < 0) {
                             ostacolos.remove(j);
+                            j--;
                         }
                         for (int k = 0; k < naveAmicas.size(); k++) {
-                            if (impulsi.get(i).x + impulsi.get(i).width > naveAmicas.get(i).x && impulsi.get(i).x < naveAmicas.get(i).x+ 100 && impulsi.get(i).y + impulsi.get(i).height > naveAmicas.get(i).y && impulsi.get(i).y < naveAmicas.get(i).y+ 100){
+                            if (impulsi.get(i).x + impulsi.get(i).width > naveAmicas.get(k).x && impulsi.get(i).x < naveAmicas.get(k).x+ 100 && impulsi.get(i).y + impulsi.get(i).height > naveAmicas.get(k).y && impulsi.get(i).y < naveAmicas.get(k).y+ 100){
                                 torreAmica.subisciDanno(10);
                                 naveAmicas.remove(k);
-                                impulsiDaRimuovere.add(impulsi.get(i));
+                                impulsiDaRimuovere.push(impulsi.get(i));
                                 break;
                             }
                         }
@@ -190,18 +195,17 @@ public class InterfacciaGiocatore extends Application {
                         player.subisciDanno(70);
                         ostacolos.remove(i);
                         i--;
+                        punti-=50;
                     }
                 }
                 if (torreAmica.vitaCorrente <= 0){
                     giocoFinito[0] = true;
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, 1920, 1080);
-
                     gc.setFill(Color.RED);
                     gc.setFont(new javafx.scene.text.Font("Arial", 80));
                     gc.setTextAlign(TextAlignment.CENTER);
                     gc.fillText("GAME OVER", 1920 / 2.0, 1080 / 2.0);
-
                     gc.setFill(Color.WHITE);
                     gc.setFont(new javafx.scene.text.Font("Arial", 30));
                     gc.fillText("La Terra è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
@@ -223,7 +227,7 @@ public class InterfacciaGiocatore extends Application {
                     gc.fillText("La tua navicella è stata distrutta!", 1920 / 2.0, (1080 / 2.0) + 60);
                     return;
                 }
-                if (roccieAbbattute > 10) {
+                if (punti >= puntiPerVincere) {
                     giocoFinito[0] = true;
                     giocoFinito[0] = true;
                     gc.setFill(Color.BLACK);
@@ -239,7 +243,7 @@ public class InterfacciaGiocatore extends Application {
                     gc.fillText("La Terra è salva!", 1920 / 2.0, (1080 / 2.0) + 60);
                     stop();
                 }
-
+                disegnaBarraPunti();
             }
         };
         timer.start();
@@ -270,7 +274,32 @@ public class InterfacciaGiocatore extends Application {
     }
 
 
+    private void disegnaBarraPunti() {
+        double barraLarghezza = 500;
+        double barraAltezza = 20;
 
+        double barraX =  (1920 - barraLarghezza) / 2;
+        double barraY = 1040;
+
+        double percentualePunti = (double) punti / puntiPerVincere;
+
+        if (percentualePunti > 0.5){
+            gc.setFill(Color.GREEN);
+        } else if (percentualePunti > 0.2){
+            gc.setFill(Color.YELLOW);
+        } else {
+            gc.setFill(Color.RED);
+        }
+        gc.fillRect(barraX, barraY, barraLarghezza*percentualePunti, barraAltezza);
+        gc.fillText(((int) (percentualePunti * 100)) + "%", 1920 / 2, barraY);
+
+
+
+
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        gc.strokeRect(barraX, barraY, barraLarghezza*percentualePunti, barraAltezza);
+    }
 
     public static void main(String[] args) {
         launch(args);

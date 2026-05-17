@@ -16,7 +16,6 @@ public class NaveAmica {
 
     public void update(){
         x += vx;
-
     }
 
     public void draw(GraphicsContext gc) {
