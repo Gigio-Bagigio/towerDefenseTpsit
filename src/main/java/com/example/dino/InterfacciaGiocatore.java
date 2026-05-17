@@ -22,6 +22,9 @@ import java.util.LinkedList;
 
 public class InterfacciaGiocatore extends Application {
     final boolean[] giocoFinito = {false};
+    private int asteroidiDistrutti = 0;
+    private final int SOGLIA_BOSS = 15; //dopo quanti asteroidi distrutti appare il boss
+    private boolean bossAttivo = false;
 
     @Override
     public void start(Stage stage) {
@@ -30,6 +33,7 @@ public class InterfacciaGiocatore extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Pane root = new Pane(canvas);
         LinkedList<Ostacolo> ostacolos = new LinkedList<>();
+
         for (int i = 0; i < 5; i++) {
             ostacolos.push(new Ostacolo(1920, Math.random() * 10000 % 1080, -3, 0));
         }
