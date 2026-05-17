@@ -60,4 +60,11 @@ public class Terra {
             this.vitaCorrente = 0;
         }
     }
-}
+
+    public void autoHeal(){
+      this.vitaCorrente = 100;
+        }
+
+
+    }
+
